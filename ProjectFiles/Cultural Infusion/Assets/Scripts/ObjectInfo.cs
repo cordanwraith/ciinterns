@@ -1,18 +1,22 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
+using System;
 
-public class ObjectInfo : MonoBehaviour
+public class ObjectInfo : MonoBehaviour, IPointerClickHandler
 {
     public string m_name;
     public string m_description;
 
-    void Start()
+    private GameManager m_manager;
+    
+    void Awake()
     {
-        ObjectManager.AddObject(gameObject);
+        m_manager = FindObjectOfType<GameManager>();
     }
 
-    public void Die()
+    public void OnPointerClick(PointerEventData eventData)
     {
-        Destroy(gameObject);
+        m_manager.OnGameObjectClicked(gameObject);
     }
 }
