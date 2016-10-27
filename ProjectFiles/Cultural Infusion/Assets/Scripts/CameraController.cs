@@ -33,43 +33,31 @@ public class CameraController : MonoBehaviour
     {
         Touch[] t = Input.touches;
 
-        if (Input.touchCount > 0)
-        {
+        if (Input.touchCount > 0)   
             //do zoom
-            if (Input.touchCount >= 2)
-            {
-                if (doingZoom)
-                {
+            if (Input.touchCount >= 2)  {
+                if (doingZoom)  {
                     //take 1/2 of the difference in magnitude from this frame to last
                     float z = ((t[0].position - t[1].position).magnitude -
                     (m_lastTouchInput[0].position - m_lastTouchInput[1].position).magnitude) * 0.5f;
                     Vector3 newPos = m_camera.transform.position + m_camera.transform.forward * z;
 
-                    Debug.Log("New pos :" + newPos);
-
                     if (newPos.magnitude < maxDistance
-                        && newPos.magnitude > minDistance)
-                    {
+                        && newPos.magnitude > minDistance)  {
                         //stops going through the floor on large movements below minimum
                         if (Vector3.Dot(newPos, Vector3.zero) > 0)
                             m_camera.transform.position = newPos;
                     }
-                }
                 else
-                {
                     doingZoom = true;
-                }
             }
             else
-            {
                 doingZoom = false;
-            }
 
             //do rotation
             if (t[0].deltaPosition.magnitude > 1.5f
                 && !doingZoom)
             {
-                Debug.Log("\tDelta Pos :" + t[0].deltaPosition);
                 Vector3 rotateAround = new Vector3(0, m_camera.transform.position.y, 0);
                 int dir = t[0].deltaPosition.x < 0 ? -1 : 1;
                 m_camera.transform.RotateAround(rotateAround, Vector3.up, t[0].deltaPosition.magnitude * dir);
