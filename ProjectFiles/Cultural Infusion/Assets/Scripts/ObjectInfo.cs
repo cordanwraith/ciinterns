@@ -10,13 +10,21 @@ public class ObjectInfo : MonoBehaviour, IPointerClickHandler
 
     private GameManager m_manager;
     
-    void Awake()
+    void Start()
     {
         m_manager = FindObjectOfType<GameManager>();
+        m_manager.AddObjectToBank(gameObject);
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         m_manager.OnGameObjectClicked(gameObject);
+    }
+
+    public void SpawnPrefab(GameObject go)
+    {
+        GameObject _go;
+        _go = Instantiate(go, transform.position, transform.rotation) as GameObject;
+        _go.transform.parent = transform;
     }
 }
