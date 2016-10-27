@@ -3,19 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "Level Data", menuName = "CI/Level Data", order = 1)]
-public class LevelData : ScriptableObject {
-
-    public int LevelNumber = 0;
-
+public class LevelData : ScriptableObject
+{
     [System.Serializable]
     public class IncludedObject
     {
-        public GameObject prefab;
+        public GameObject go;
 
-        [Range(0, 100)]
-        public int count = 0;
+        [Range(0, 10)]
+        public int weight = 0;
+
+        public string Name;
+        public string Description;
     }
 
     public List<IncludedObject> Objects;
-
 }
