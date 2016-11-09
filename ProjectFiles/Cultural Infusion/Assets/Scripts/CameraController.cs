@@ -45,7 +45,7 @@ public class CameraController : MonoBehaviour
                     if (newPos.magnitude < maxDistance
                         && newPos.magnitude > minDistance)  {
                         //stops going through the floor on large movements below minimum
-                        if (Vector3.Dot(newPos, Vector3.zero) > 0)
+                        if (Vector3.Dot(newPos, Vector3.up) > 0)
                             m_camera.transform.position = newPos;
                     }
                 else

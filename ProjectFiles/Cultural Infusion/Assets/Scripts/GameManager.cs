@@ -4,131 +4,106 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    protected static GameManager instance;
+    //total number of objects that /could/ spawn
+    private int m_totalNumOfCollectables;
+    //total number of objects /to/ spawn. If this is less than total num of collectables it's set to that
+    private int m_numCollectableInScene = 4;
 
-    /* This level data file holds 
-     * information about what objects 
-     * to spawn, and how many.
-     */
-    public LevelData data;
-
-    private List<GameObject> m_objectBank = new List<GameObject>();
-    private List<GameObject> m_objectPool = new List<GameObject>();
-    float m_totalObjectWeight;
-
-    public static GameManager GetInstance()
-    {
-        return instance;
-    }
-
-    void Awake()
-    {
-        // Make sure there is only GameManager in the scene.
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
+    GameObject[] m_collectableObjects;
+    bool[] m_collectedObjects;
 
     void Start()
     {
-        SetInitialObjects();
-        AddObjectsToPool(4);
-	}
+        //seed the collected objects array
+        m_collectedObjects = new bool[m_numCollectableInScene];
+        for (int i = 0; i < m_numCollectableInScene; ++i)
+            m_collectedObjects[i] = false;
+
+        SpawnObjects();
+    }
+
+    private void SpawnObjects()
+    {
+        //find all the objects
+        GameObject[] collectiblePrefabs = Resources.LoadAll<GameObject>("Tanabata/Collectables/");
+        m_totalNumOfCollectables = collectiblePrefabs.Length;
+
+        //four objects to collect
+        m_collectableObjects = new GameObject[m_numCollectableInScene];
+
+        //if (m_totalNumOfCollectables < m_numCollectableInScene)
+        //    m_numCollectableInScene = m_totalNumOfCollectables;
+
+        //randomize the objects to choose
+        List<int> whichObjectsToSpawn = new List<int>(m_numCollectableInScene);
+        for (int i = 0; i < m_numCollectableInScene; ++i)
+        {
+            int r = Random.Range(0, m_totalNumOfCollectables);
+            //if (whichObjectsToSpawn.Contains(r))
+            //{
+            //    i--;
+            //    continue;
+            //}
+            whichObjectsToSpawn.Add(r);
+        }
+
+        //find all objects with the tag 'SpawnLocation'
+        GameObject[] spawnLocations = GameObject.FindGameObjectsWithTag("SpawnLocation");
+
+        //randomize the locations to choose
+        List<int> whereToSpawnObjects = new List<int>(spawnLocations.Length);
+        for (int i = 0; i < spawnLocations.Length; ++i)
+        {
+            int r = Random.Range(0, spawnLocations.Length);
+            if (whereToSpawnObjects.Contains(r))
+            {
+                i--;
+                continue;
+            }
+            whereToSpawnObjects.Add(r);
+        }
+
+        //todo: generalize this (use scene name?)
+        //todo: create the objects
+        for (int i = 0; i < m_numCollectableInScene; ++i)
+        {
+            m_collectableObjects[i] = (GameObject)Instantiate(collectiblePrefabs[whichObjectsToSpawn[i]], spawnLocations[i].transform, false);
+        }
+    }
+
+    void Update()
+    {
+        if (CheckForWin())
+            UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+    }
 
     //WIN CHECK
     bool CheckForWin()
     {
-        int num;
-        num = m_objectBank.Count;
-        num += m_objectPool.Count;
+        bool ret = true;
+        for (int i = 0; i < m_numCollectableInScene; ++i)
+            ret = ret && m_collectedObjects[i];
 
-        if (m_objectPool.Count == 0 && num > 0)
-            AddObjectsToPool(4);
-
-        return (num == 0);
+        return ret;
     }
-    
+
     //WHEN OBJECT IS CLICKED
     public void OnGameObjectClicked(GameObject go)
     {
-        if (m_objectPool.Contains(go))
-            RemoveObjectFromPool(go);
-    }
-
-    /// ADD OBJECTS TO POOL\BANK ///
-    public void AddObjectsToPool(int amount)
-    {
-        for (int i = 0; i < amount; i++)
+        int i = 0;
+        for (; i < m_numCollectableInScene; ++i)
         {
-            if (m_objectBank.Count == 0) break;
-
-            // Select randomly from the bank
-            int randID = Random.Range(0, m_objectBank.Count);
-
-            // Add to pool, then remove from bank.
-            m_objectPool.Add(m_objectBank[randID]);
-            m_objectBank.RemoveAt(randID);
+            if (m_collectableObjects[i] == go)
+                break;
+            if (i == m_numCollectableInScene)
+                return;
         }
-    }
 
-    public void AddObjectToBank(GameObject go)
-    {
-        m_objectBank.Add(go);
-    }
+        if (i == m_numCollectableInScene)
+            return;
 
-    /// REMOVE OBJECTS FROM POOL\BANK ///
-    private void RemoveObjectFromBank(GameObject go)
-    {
-        m_objectBank.Remove(go);
-    }
-
-    private void RemoveObjectFromPool(GameObject go)
-    {
-        m_objectPool.Remove(go);
+        Debug.Log(go);
+        m_collectedObjects[i] = true;
         Destroy(go);
-        CheckForWin();
-    }
-
-    /// SPAWNING OBJECTS ///
-    private GameObject Spawn()
-    {
-        // Generate a random position in the list.
-        float pick = Random.value * m_totalObjectWeight;
-        int chosenIndex = 0;
-        float cumulativeWeight = data.Objects[0].weight;
-
-        // Step through the list until we've accumulated more weight than this.
-        // The length check is for safety in case rounding errors accumulate.
-        while (pick > cumulativeWeight && chosenIndex < data.Objects.Count - 1)
-        {
-            chosenIndex++;
-            cumulativeWeight += data.Objects[chosenIndex].weight;
-        }
-
-        // Spawn the chosen item.
-        return data.Objects[chosenIndex].go;
-    }
-
-    void UpdateTotalWeight()
-    {
-        m_totalObjectWeight = 0f;
-        foreach (var spawnable in data.Objects)
-            m_totalObjectWeight += spawnable.weight;
-    }
-
-    void SetInitialObjects()
-    {
-        foreach (var obj in m_objectBank)
-        {
-            GameObject go;
-
-            go = Instantiate(Spawn(), obj.transform.position, obj.transform.rotation) as GameObject;
-            go.transform.parent = obj.transform;
-        }
     }
 }
