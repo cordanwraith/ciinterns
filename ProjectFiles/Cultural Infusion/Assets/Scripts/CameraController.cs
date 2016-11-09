@@ -73,7 +73,11 @@ public class CameraController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            m_hinge.transform.Translate(m_camera.transform.forward.normalized * 2);
+            m_hinge.transform.Translate(m_camera.transform.forward.normalized * (Time.deltaTime * m_speed));
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            m_hinge.transform.Translate(m_camera.transform.forward.normalized * -1 * (Time.deltaTime * m_speed));
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
