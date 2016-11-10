@@ -67,7 +67,8 @@ public class GameManager : MonoBehaviour
         //todo: create the objects
         for (int i = 0; i < m_numCollectableInScene; ++i)
         {
-            m_collectableObjects[i] = (GameObject)Instantiate(collectiblePrefabs[whichObjectsToSpawn[i]], spawnLocations[i].transform, false);
+            m_collectableObjects[i] = (GameObject)Instantiate(collectiblePrefabs[whichObjectsToSpawn[i]], spawnLocations[i].transform.position, Quaternion.identity);
+            m_collectableObjects[i].transform.parent = spawnLocations[i].transform;
         }
     }
 
