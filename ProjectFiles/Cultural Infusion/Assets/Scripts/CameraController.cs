@@ -45,7 +45,7 @@ public class CameraController : MonoBehaviour
                     if (newPos.magnitude < maxDistance
                         && newPos.magnitude > minDistance)  {
                         //stops going through the floor on large movements below minimum
-                        if (Vector3.Dot(newPos, Vector3.zero) > 0)
+                        if (Vector3.Dot(newPos, Vector3.up) > 0)
                             m_camera.transform.position = newPos;
                     }
                 else
@@ -73,7 +73,11 @@ public class CameraController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            m_hinge.transform.Translate(m_camera.transform.forward.normalized * 2);
+            m_hinge.transform.Translate(m_camera.transform.forward.normalized * (Time.deltaTime * m_speed));
+        }
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            m_hinge.transform.Translate(m_camera.transform.forward.normalized * -1 * (Time.deltaTime * m_speed));
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
