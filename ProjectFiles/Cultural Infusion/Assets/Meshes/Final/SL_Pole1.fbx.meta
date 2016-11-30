@@ -1,7 +1,7 @@
 fileFormatVersion: 2
-guid: bd2f51b30ce37fc4c8a45feddf8da49e
-timeCreated: 1479363607
-licenseType: Free
+guid: 42dcadc420afb494bb7c684d4238f3c5
+timeCreated: 1480489790
+licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -9,7 +9,8 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: SL_Pole_1
+    4300000: SL_pole1
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -68,7 +69,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

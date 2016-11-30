@@ -1,15 +1,40 @@
 fileFormatVersion: 2
-guid: 98d396c5e611e6e4a9db958677ae13a4
-timeCreated: 1479887740
-licenseType: Free
+guid: 0159da000c46e0a4a80be493c777446b
+timeCreated: 1480490911
+licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    400000: //RootNode
-    2300000: //RootNode
-    3300000: //RootNode
-    4300000: tree
+    100000: Alisons_tree
+    100002: GEO_Leaves_01
+    100004: GEO_Leaves_02
+    100006: GEO_Leaves_03
+    100008: GEO_Trunk
+    100010: //RootNode
+    100012: SmallTree
+    400000: Alisons_tree
+    400002: GEO_Leaves_01
+    400004: GEO_Leaves_02
+    400006: GEO_Leaves_03
+    400008: GEO_Trunk
+    400010: //RootNode
+    400012: SmallTree
+    2300000: GEO_Leaves_01
+    2300002: GEO_Leaves_02
+    2300004: GEO_Leaves_03
+    2300006: GEO_Trunk
+    2300008: SmallTree
+    3300000: GEO_Leaves_01
+    3300002: GEO_Leaves_02
+    3300004: GEO_Leaves_03
+    3300006: GEO_Trunk
+    3300008: SmallTree
+    4300000: GEO_Trunk
+    4300002: GEO_Leaves_01
+    4300004: GEO_Leaves_02
+    4300006: GEO_Leaves_03
+    4300008: SmallTree
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -34,7 +59,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 0.5
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -68,7 +93,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

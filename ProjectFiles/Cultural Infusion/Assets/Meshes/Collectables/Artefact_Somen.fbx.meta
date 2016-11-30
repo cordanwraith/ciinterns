@@ -1,7 +1,7 @@
 fileFormatVersion: 2
-guid: c7eeb1083cd9b2e45b4c68d67d772d75
-timeCreated: 1479799938
-licenseType: Free
+guid: 9e041f965349b634794995f9d1150f64
+timeCreated: 1480488487
+licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -10,6 +10,7 @@ ModelImporter:
     2300000: //RootNode
     3300000: //RootNode
     4300000: Artefact_Somen
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -68,7 +69,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

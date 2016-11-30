@@ -1,7 +1,7 @@
 fileFormatVersion: 2
-guid: 4be4d6aee0d401c4e916605213af1944
-timeCreated: 1478150752
-licenseType: Free
+guid: 64510e5c78039a042bf3cb24ee20c294
+timeCreated: 1480489790
+licenseType: Pro
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
@@ -9,7 +9,8 @@ ModelImporter:
     400000: //RootNode
     2300000: //RootNode
     3300000: //RootNode
-    4300000: Hanging_Lantern_Bottom2
+    4300000: Hanging_Lantern_Bottom4
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -68,7 +69,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
