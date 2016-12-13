@@ -51,10 +51,10 @@ public class CameraController : MonoBehaviour
                         if (Vector3.Dot(newPos, Vector3.up) > 0)
                             m_camera.transform.position = newPos;
                     }
-                    else
-                    {
-                        doingZoom = true;
-                    }
+                }
+                else
+                {
+                    doingZoom = true;
                 }
             }
             else
