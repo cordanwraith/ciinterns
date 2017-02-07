@@ -7,6 +7,9 @@ public class CameraController : MonoBehaviour
     Transform m_hinge;
     public float m_speed;
 
+    [SerializeField]
+    private int rotationSpeed = 5;
+
     private Touch[] m_lastTouchInput;
     private bool doingZoom;
 
@@ -65,8 +68,8 @@ public class CameraController : MonoBehaviour
                 && !doingZoom)
             {
                 Vector3 rotateAround = new Vector3(0, m_camera.transform.position.y, 0);
-                int dir = t[0].deltaPosition.x < 0 ? -1 : 1;
-                m_camera.transform.RotateAround(rotateAround, Vector3.up, t[0].deltaPosition.magnitude * dir);
+                int dir = (t[0].deltaPosition.x < 0 ? -1 : 1) * rotationSpeed;
+                m_camera.transform.RotateAround(rotateAround, Vector3.up, t[0].deltaPosition.magnitude * dir * Time.deltaTime);
             }
         }
 
