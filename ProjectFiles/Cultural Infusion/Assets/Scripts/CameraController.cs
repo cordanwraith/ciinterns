@@ -9,21 +9,19 @@ public class CameraController : MonoBehaviour
 
     [SerializeField]
     private int rotationSpeed = 5;
-
-    private Touch[] m_lastTouchInput;
+    [SerializeField]
+    private float zoomSpeed = 0.1f;
     private bool doingZoom;
 
     //min and max distances for zooming
-    private float maxDistance = 40;
-    private float minDistance = 10;
+    private float maxDistance = 60.0f;
+    private float minDistance = 20.0f;
 
     void Start()
     {
         m_camera = GetComponent<Camera>();
         m_hinge = gameObject.transform.parent;
         m_speed *= 10;
-
-        m_lastTouchInput = new Touch[0];
     }
 
     void Update()
@@ -41,19 +39,24 @@ public class CameraController : MonoBehaviour
             if (Input.touchCount >= 2)
             {
                 if (doingZoom)
-                {
-                    //take 1/2 of the difference in magnitude from this frame to last
-                    float z = ((t[0].position - t[1].position).magnitude -
-                    (m_lastTouchInput[0].position - m_lastTouchInput[1].position).magnitude) * 0.5f;
-                    Vector3 newPos = m_camera.transform.position + m_camera.transform.forward * z;
+                {                    
+                    Touch firstTouch = Input.GetTouch(0);
+                    Touch secondTouch = Input.GetTouch(1);
 
-                    if (newPos.magnitude < maxDistance
-                        && newPos.magnitude > minDistance)
-                    {
-                        //stops going through the floor on large movements below minimum
-                        if (Vector3.Dot(newPos, Vector3.up) > 0)
-                            m_camera.transform.position = newPos;
-                    }
+                    //find the previous position of the touches
+                    Vector2 prevTouchPosOne = firstTouch.position - firstTouch.deltaPosition;
+                    Vector2 prevTouchPosTwo = secondTouch.position - secondTouch.deltaPosition;
+
+                    //find the magnitude between the touches
+                    float prevTouchDeltaMag = (prevTouchPosOne - prevTouchPosTwo).magnitude;
+                    float touchDeltaMag = (firstTouch.position - secondTouch.position).magnitude;
+
+                    //find the difference between the current frame and the last
+                    float deltaMagDiff = prevTouchDeltaMag - touchDeltaMag;
+
+                    //change fov based on distance between touches
+                    m_camera.fieldOfView += deltaMagDiff + zoomSpeed;
+                    m_camera.fieldOfView = Mathf.Clamp(m_camera.fieldOfView, minDistance, maxDistance);
                 }
                 else
                 {
@@ -72,10 +75,7 @@ public class CameraController : MonoBehaviour
                 m_camera.transform.RotateAround(rotateAround, Vector3.up, t[0].deltaPosition.magnitude * dir * Time.deltaTime);
             }
         }
-
         m_camera.transform.LookAt(Vector3.zero);
-        //double buffered touch input for zooming
-        m_lastTouchInput = t;
     }
 
     private void KeyboardControls()
