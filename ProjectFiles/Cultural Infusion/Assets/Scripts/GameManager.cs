@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     //total number of objects /to/ spawn. If this is less than total num of collectables it's set to that
     private int m_numCollectableInScene = 4;
 
+    public Image[] images;
     GameObject[] m_collectableObjects;
     bool[] m_collectedObjects;
 
@@ -47,6 +49,16 @@ public class GameManager : MonoBehaviour
             whichObjectsToSpawn.Add(r);
         }
 
+        //find ui locations and images
+        Object[] collectImages = Resources.LoadAll("Images/", typeof(Sprite));
+        Sprite[] sprites = new Sprite[collectImages.Length];
+
+        //convert images to sprites
+        for (int i = 0; i < collectImages.Length; i++)
+        {
+            sprites[i] = (Sprite)collectImages[i];
+        }
+
         //find all objects with the tag 'SpawnLocation'
         GameObject[] spawnLocations = GameObject.FindGameObjectsWithTag("SpawnLocation");
 
@@ -61,6 +73,8 @@ public class GameManager : MonoBehaviour
                 continue;
             }
             whereToSpawnObjects.Add(r);
+            //change ui image sprite
+            images[i].GetComponent<Image>().sprite = sprites[r];
         }
 
         //todo: generalize this (use scene name?)
